@@ -1,0 +1,33 @@
+{
+  "whitespace": {
+    "colonPolicy": "after",
+    "caseColonPolicy": "onlyAfter",
+    "objectFieldColonPolicy": "after",
+    "typeHintColonPolicy": "after",
+    "typeCheckColonPolicy": "after",
+    "ternaryPolicy": "around"
+  },
+  "emptyLines": {
+    "importAndUsing": {
+      "betweenImportsLevel": "firstLevelPackage",
+      "betweenImports": 1,
+      "beforeUsing": 1
+    },
+    "maxAnywhereInFile": "1",
+    "classEmptyLines": {
+        "beginType": 1
+    }
+  },
+  "indentation": {
+    "character": "tab",
+    "tabWidth": 4,
+    "conditionalPolicy": "fixedZero"
+  },
+  "sameLine": {
+    "ifBody": "same",
+    "forBody": "same"
+  },
+  "wrapping": {
+    "maxLineLength": 110
+  }
+}

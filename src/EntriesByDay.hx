@@ -57,6 +57,10 @@ class EntriesByDay {
 			if (currentTimeNum != null && intervalStart <= now && now <= intervalEnd) {
 				h = currentTimeNum;
 			} else if (currentInd < this.entries.length) {
+				var duration: Float = 0;
+				// this loop handles 2 entries in a single interval.
+				// mostly to handle split command
+				// in rare cases, might handle more than 2 entries in the same interval
 				while (currentInd < this.entries.length) {
 					var entry = this.entries[currentInd];
 					// the window haven't move to the next entry, we do nothing
@@ -64,11 +68,11 @@ class EntriesByDay {
 					var min = intervalStart > entry.timeStart ? intervalStart : entry.timeStart;
 					var timeEnd = entry.timeEnd == null ? now : entry.timeEnd;
 					var max = intervalEnd < timeEnd ? intervalEnd : timeEnd;
-					var duration = (max - min).getTotalSeconds();
-					h += Std.int(duration / intervalDuration * 100);
+					duration += (max - min).getTotalSeconds();
 					if (max == intervalEnd) break;
 					currentInd += 1;
 				}
+				h = Std.int(duration / intervalDuration * 100);
 			}
 			if (h > 100) h = 100;
 			heat.push(h);

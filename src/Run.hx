@@ -33,7 +33,8 @@ class Run {
 				Console.log('invalid option ${args[0]}');
 				return;
 			} else {
-				while (args.length > 0) commands.push(args.shift());
+				while (args.length > 0)
+					commands.push(args.shift());
 			}
 		}
 

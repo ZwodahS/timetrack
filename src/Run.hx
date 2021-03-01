@@ -92,7 +92,7 @@ class Run {
 		try {
 			Run.db = Database.loadFromFile(path);
 			return true;
-		} catch (e) {
+		} catch (e: haxe.Exception) {
 			return false;
 		}
 	}
@@ -167,7 +167,7 @@ class Run {
 		if (args.length != 0) {
 			try {
 				count = Std.parseInt(args[0]);
-			} catch (e) {
+			} catch (e: haxe.Exception) {
 				Console.log('invalid value: ${args[0]}');
 				return;
 			}
@@ -316,7 +316,7 @@ class Run {
 			try {
 				var i = Std.parseInt(args[0]);
 				dt += Day(i);
-			} catch (e) {
+			} catch (e: haxe.Exception) {
 				Console.log('invalid value: ${args[0]}');
 			}
 		}
@@ -398,7 +398,7 @@ class Run {
 			try {
 				var i = Std.parseInt(args[0]);
 				dt += Week(i);
-			} catch (e) {
+			} catch (e: haxe.Exception) {
 				Console.log('invalid value: ${args[0]}');
 			}
 		}

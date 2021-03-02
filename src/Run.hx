@@ -444,7 +444,7 @@ class Run {
 			var prefix = "<blue>" + "[Total]".lpad(" ", 9) + "</> - ";
 			var durationString = formatDuration(total);
 			var str = prefix + formatHeatmap(heatmapTotal) + " " + durationString;
-			if (dt != thisWeek && total / DateTime.SECONDS_IN_HOUR < 40) {
+			if (weekStart != thisWeek && total / DateTime.SECONDS_IN_HOUR < 40) {
 				str += ' (<red>Missed 40h Target</>)';
 			}
 			Console.log(str);

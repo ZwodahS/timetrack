@@ -54,9 +54,7 @@ class EntriesByDay {
 				if (intervalStart > timeEnd) currentInd += 1;
 			}
 
-			if (currentTimeNum != null && intervalStart <= now && now <= intervalEnd) {
-				h = currentTimeNum;
-			} else if (currentInd < this.entries.length) {
+			if (currentInd < this.entries.length) {
 				var duration: Float = 0;
 				// this loop handles 2 entries in a single interval.
 				// mostly to handle split command
@@ -74,6 +72,10 @@ class EntriesByDay {
 				}
 				h = Std.int(duration / intervalDuration * 100);
 			}
+			if (currentTimeNum != null && intervalStart <= now && now <= intervalEnd) {
+				h = currentTimeNum;
+			}
+
 			if (h > 100) h = 100;
 			heat.push(h);
 			curr = intervalEnd;

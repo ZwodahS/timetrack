@@ -110,7 +110,7 @@ class Database {
 
 	public function getActiveEntry(): Entry {
 		var entry = getLastEntry();
-		if (entry.timeEnd != null) return null;
+		if (entry == null || entry.timeEnd != null) return null;
 		return entry;
 	}
 

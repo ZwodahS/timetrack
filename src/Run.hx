@@ -76,9 +76,7 @@ class Run {
 		Console.log("  --redact hide descriptions when printing entries");
 		Console.log("Commands: ");
 		pushPrefix("    ");
-		Console.log("<magenta>quit</>".rpad(" ", 40) + "quit the interpreter");
 		Console.log("<magenta>info</>".rpad(" ", 40) + "print current week screen");
-		Console.log("<magenta>clear</>".rpad(" ", 40) + "clear the screen");
 		Console.log("<magenta>cancel</>".rpad(" ", 40) + "undo a [start] command");
 		Console.log("<magenta>start</>".rpad(" ", 40) + "start a new entry");
 		Console.log("<magenta>finish</> [description]".rpad(" ", 40)
@@ -95,6 +93,8 @@ class Run {
 		Console.log("<magenta>help</>".rpad(" ", 40) + "print this help");
 		if (Run.interpreterMode) {
 			Console.log("<magenta>save</>".rpad(" ", 40) + "save any unsaved changes");
+			Console.log("<magenta>clear</>".rpad(" ", 40) + "clear the screen");
+			Console.log("<magenta>quit</>".rpad(" ", 40) + "quit the interpreter");
 		}
 		popPrefix();
 		popPrefix();

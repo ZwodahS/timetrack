@@ -26,3 +26,15 @@ Output will be in bin/timetrack
 ## Known Issues
 
 - If an entries span across the day boundary, it is currently not handled. This is why dayStart is set to 6am by default.
+
+# Configuration
+
+A config file can be created at the home directory.
+
+```
+{
+    "dayStart": 6
+}
+```
+
+- dayStart: set the hour to start the day

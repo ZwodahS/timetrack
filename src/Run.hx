@@ -12,6 +12,9 @@ class Run {
 	static public function main() {
 		var args = Sys.args();
 
+		// TODO: Fix for windows if necessary
+		var home = Sys.getEnv("HOME");
+		Config.loadFromFile('${home}/.ttconfig');
 		var interpreter = false;
 		var dataPath = "timesheet.json";
 		var createFile = false;
@@ -286,11 +289,10 @@ class Run {
 	}
 
 	static function generateHeatmapHourHeader(distance: Int): String {
-		// we always start from 6
-		var start = 6;
+		var start = Config.dayStart;
 		if (distance >= 6) {
 			var str = [];
-			while (start != 6 || str.length == 0) {
+			while (start != Config.dayStart || str.length == 0) {
 				str.push('|<blue>${formatInt(start, false)}:00</>');
 				start += 1;
 				if (start == 24) start = 0;

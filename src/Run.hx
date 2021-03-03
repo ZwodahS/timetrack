@@ -138,6 +138,13 @@ class Run {
 	static function processCommand(command: String): Bool {
 		command = command.trim();
 		var split = command.split(" ");
+		// convert aliases if any
+		var mapped = Config.aliases[split[0]];
+		if (mapped != null) {
+			split[0] = mapped;
+			command = split.join(" ");
+			split = command.split(" ");
+		}
 		switch (split[0]) {
 			case "quit":
 				return quit();

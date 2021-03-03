@@ -34,6 +34,11 @@ A config file can be created at the home directory.
 ```
 {
     "dayStart": 6
+    "aliases": {
+        "q": "quit",
+        "l9": "last 9",
+        "st": "start"
+    }
 }
 ```
 

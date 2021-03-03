@@ -66,7 +66,8 @@ class Run {
 
 	static function help() {
 		pushPrefix('');
-		Console.log("timetrack [-i] [-f path] [command] [command args]");
+		Console.log("timetrack [-c] [--redact] [-i] [-f path] [command] [command args]");
+		Console.log("  -c create data file if not found");
 		Console.log("  -i interpreter mode");
 		Console.log("  -f path to data.json, default to current directory timesheet.json");
 		Console.log("  --redact hide descriptions when printing entries");

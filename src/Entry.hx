@@ -7,9 +7,14 @@ import datetime.DateTimeInterval;
 class Entry {
 	public var timeStart: Null<DateTime>;
 	public var timeEnd: Null<DateTime>;
-	public var description: String = "";
+	public var description(get, default): String = "";
 	public var db: Database;
 	public var day(get, never): DateTime;
+
+	public function get_description(): String {
+		if (Run.redact) return '--REDACTED--';
+		return this.description;
+	}
 
 	public function get_day(): Null<DateTime> {
 		if (this.db == null || this.timeStart == null) return null;

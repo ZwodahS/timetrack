@@ -7,6 +7,7 @@ using StringTools;
 class Run {
 	public static var db: Database;
 	public static var interpreterMode = false;
+	public static var redact = false;
 
 	static public function main() {
 		var args = Sys.args();
@@ -29,6 +30,9 @@ class Run {
 			} else if (args[0] == '-c') {
 				args.shift();
 				createFile = true;
+			} else if (args[0] == '--redact') {
+				args.shift();
+				Run.redact = true;
 			} else if (args[0].startsWith('-')) {
 				Console.log('invalid option ${args[0]}');
 				return;
@@ -65,6 +69,7 @@ class Run {
 		Console.log("timetrack [-i] [-f path] [command] [command args]");
 		Console.log("  -i interpreter mode");
 		Console.log("  -f path to data.json, default to current directory timesheet.json");
+		Console.log("  --redact hide descriptions when printing entries");
 		Console.log("Commands: ");
 		pushPrefix("    ");
 		Console.log("<magenta>quit</>".rpad(" ", 40) + "quit the interpreter");

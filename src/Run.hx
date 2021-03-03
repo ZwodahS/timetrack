@@ -76,7 +76,6 @@ class Run {
 			+ "finish the current entry with description");
 		Console.log("<magenta>split</> [description]".rpad(" ", 40)
 			+ "finish the current entry with description and start a new entry");
-		Console.log("<magenta>save</>".rpad(" ", 40) + "save any unsaved changes");
 		Console.log("<magenta>description</> [description]".rpad(" ", 40)
 			+ "set the description of the last entry");
 		Console.log("<magenta>day</> [offset]".rpad(" ", 40) + "print day information");
@@ -85,6 +84,9 @@ class Run {
 		Console.log("<magenta>stats</>".rpad(" ", 40) + "print data stats");
 		Console.log("<magenta>last</> [number]".rpad(" ", 40) + "print the last few entries");
 		Console.log("<magenta>help</>".rpad(" ", 40) + "print this help");
+		if (Run.interpreterMode) {
+			Console.log("<magenta>save</>".rpad(" ", 40) + "save any unsaved changes");
+		}
 		popPrefix();
 		popPrefix();
 	}

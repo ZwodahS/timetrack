@@ -161,6 +161,9 @@ class Run {
 				last(split.slice(1));
 			case "help":
 				help();
+			default:
+				Console.log('Invalid command: <red>${split[0]}</>');
+				help();
 		}
 		return false;
 	}

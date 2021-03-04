@@ -7,6 +7,13 @@ class Config {
 	public static var dayStart = 6;
 	public static var aliases: Map<String, String>;
 
+	public static var heatmapColor = {
+		threshold: ["<bold,green>", "<green>", "<dim,light_green>", "<dim,green>"],
+		zero: "<dim,light_black>",
+		current: "<light_yellow>",
+	}
+	public static var heatmapThreshold: Array<Int> = [100, 66, 33];
+
 	public static function init() {
 		Config.aliases = new Map<String, String>();
 	}

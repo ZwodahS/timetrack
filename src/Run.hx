@@ -327,21 +327,21 @@ class Run {
 	}
 
 	static function formatHeatmap(heat: Array<Int>, ?threshold: Array<Int> = null): String {
-		if (threshold == null) threshold = [100, 66, 33];
+		if (threshold == null) threshold = Config.heatmapThreshold;
 		var str = "";
 		for (i in heat) {
 			if (i >= threshold[0]) {
-				str += '<bold,green>■</>';
-			} else if (i > threshold[1]) {
-				str += '<green>■</>';
-			} else if (i > threshold[2]) {
-				str += '<dim,light_green>■</>';
+				str += '${Config.heatmapColor.threshold[0]}■</>';
+			} else if (i >= threshold[1]) {
+				str += '${Config.heatmapColor.threshold[1]}■</>';
+			} else if (i >= threshold[2]) {
+				str += '${Config.heatmapColor.threshold[2]}■</>';
 			} else if (i > 0) {
-				str += '<dim,green>■</>';
+				str += '${Config.heatmapColor.threshold[3]}■</>';
 			} else if (i == 0) {
-				str += '<light_black>■</>';
+				str += '${Config.heatmapColor.zero}■</>';
 			} else if (i == -1) {
-				str += '<light_yellow>■</>';
+				str += '${Config.heatmapColor.current}■</>';
 			}
 		}
 		return str;

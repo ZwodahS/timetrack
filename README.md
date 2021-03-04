@@ -42,7 +42,7 @@ In that case output will be in `bin/timetrack`
 
 # Configuration
 
-A config file can be created at the home directory.
+A config file `.ttconfig` can be created at the home directory.
 
 ```
 {

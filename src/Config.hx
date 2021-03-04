@@ -7,9 +7,12 @@ class Config {
 	public static var dayStart = 6;
 	public static var aliases: Map<String, String>;
 
+	public static function init() {
+		Config.aliases = new Map<String, String>();
+	}
+
 	public static function loadFromFile(path: String) {
 		if (!sys.FileSystem.exists(path)) return;
-		Config.aliases = new Map<String, String>();
 		try {
 			var data = sys.io.File.getContent(path);
 			var config: ConfigStruct = haxe.Json.parse(data);

@@ -14,6 +14,7 @@ class Run {
 
 		// TODO: Fix for windows if necessary
 		var home = Sys.getEnv("HOME");
+		Config.init();
 		Config.loadFromFile('${home}/.ttconfig');
 		var interpreter = false;
 		var dataPath = "timesheet.json";

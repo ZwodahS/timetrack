@@ -3,14 +3,17 @@ class EntriesByWeek {
 	public var entriesByDayMap: Map<Int, EntriesByDay>;
 	public var entriesByDayArray: Array<EntriesByDay>;
 	public var weekStart: DateTime;
+	public var db: Database;
 
-	public function new(weekStart: DateTime) {
+	public function new(db: Database, weekStart: DateTime) {
+		this.db = db;
 		this.weekStart = weekStart; // this will always be monday
 		this.entriesByDayMap = new Map<Int, EntriesByDay>();
 		this.entriesByDayArray = [];
 		var curr = new DateTime(this.weekStart);
 		for (i in 0...7) {
 			var day = new EntriesByDay(curr);
+			day.db = this.db;
 			this.entriesByDayMap[Database.getDayKey(curr)] = day;
 			this.entriesByDayArray.push(day);
 			curr = curr + Day(1);

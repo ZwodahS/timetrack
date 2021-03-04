@@ -5,6 +5,7 @@ import datetime.DateTimeInterval;
 	Track a single time entry
 **/
 class Entry {
+	public var index: Int;
 	public var timeStart: Null<DateTime>;
 	public var timeEnd: Null<DateTime>;
 	public var description(get, default): String = "";
@@ -43,5 +44,9 @@ class Entry {
 		s.description = this.description;
 		if (this.timeEnd != null) s.timeEnd = this.timeEnd.toString();
 		return s;
+	}
+
+	public function toString(): String {
+		return '${timeStart} - ${timeEnd} : ${description}';
 	}
 }

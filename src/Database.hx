@@ -49,7 +49,7 @@ class Database {
 			var weekKey = getDayKey(weekStart);
 			var week = entriesByWeek[weekKey];
 			if (week == null) {
-				week = new EntriesByWeek(weekStart);
+				week = new EntriesByWeek(this, weekStart);
 				this.entriesByWeek[weekKey] = week;
 				this.entriesByWeekArray[weekKey] = week;
 			}
@@ -57,15 +57,18 @@ class Database {
 			this.entriesByDay[dayKey] = dayEntries;
 			this.entriesByDayArray.push(dayEntries);
 		}
+		entry.index = this.allEntries.length;
 		this.allEntries.push(entry);
 		this.entriesByDay[dayKey].addEntry(entry);
 		this.isDirty = true;
 	}
 
-	static public function getStoredDate(dt: DateTime, ?dayStart: Null<Int>): DateTime {
-		if (dayStart == null) dayStart = Config.dayStart;
-		// because my "Day" start at 6am, so we will subtract the time by 6 hour first
-		var dayDT = dt - Hour(dayStart);
+	/**
+		This get the stored date for a specific time.
+		Note, do not run this on Entry.day, as Entry.day is already floored once.
+	**/
+	static public function getStoredDate(dt: DateTime): DateTime {
+		var dayDT = dt - Hour(Config.dayStart);
 		var d = dayDT.snap(Day(Down));
 		return d;
 	}
@@ -140,18 +143,28 @@ class Database {
 		return true;
 	}
 
+	/**
+		Get the day entries for this datetime
+
+		Note: do not use entry.day as the param, as entry.day is already been floored
+	**/
 	public function getDayEntries(?day: DateTime): EntriesByDay {
 		if (day == null) day = DateTime.local();
 		day = getStoredDate(day);
 		return this.entriesByDay[getDayKey(day)];
 	}
 
+	/**
+		Get the week entries for this datetime
+
+		Note: do not use entry.day as the param, as entry.day had already been floored
+	**/
 	public function getWeekEntries(?d: DateTime = null): EntriesByWeek {
 		var weekStart = getWeekStart(d);
 		var weekStartKey = getDayKey(weekStart);
 		var week = entriesByWeek[weekStartKey];
 		if (week == null) {
-			week = new EntriesByWeek(weekStart);
+			week = new EntriesByWeek(this, weekStart);
 		}
 		return week;
 	}

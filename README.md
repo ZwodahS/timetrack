@@ -36,10 +36,6 @@ Alternative you can `make gcc` to create the binary instead.
 This requires you to download all the required hashlink files to compile.
 In that case output will be in `bin/timetrack`
 
-## Known Issues
-
-- If an entries span across the day boundary, it is currently not handled. This is why dayStart is set to 6am by default.
-
 # Configuration
 
 A config file `.ttconfig` can be created at the home directory.

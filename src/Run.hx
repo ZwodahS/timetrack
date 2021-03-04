@@ -11,6 +11,7 @@ class Run {
 
 	static public function main() {
 		var args = Sys.args();
+		if (Sys.getEnv("HAXELIB_RUN") == "1") args.pop();
 
 		// TODO: Fix for windows if necessary
 		var home = Sys.getEnv("HOME");

@@ -1,0 +1,22 @@
+{
+  "name": "timetrack",
+  "url": "https://github.com/ZwodahS/timetrack",
+  "license": "MIT",
+  "tags": [
+    "cli",
+    "tool"
+  ],
+  "description": "A command line time tracking tool",
+  "version": "0.0.1",
+  "releasenote": "Initial Release",
+  "contributors": [
+    "ZwodahS"
+  ],
+  "dependencies": {
+    "console": "",
+    "datetime": ""
+  },
+  "main": "Run",
+  "classPath": "src"
+
+}

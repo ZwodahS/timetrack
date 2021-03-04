@@ -45,7 +45,10 @@ class EntriesByDay {
 		// my brain isn't working as well to imagine if this is guaranteed to be the case.
 		// let's just check for more just in case ? I am quite sure there is no case that
 		// there is more than than one
-		while (ind >= 0 && previousDay.entries[ind].timeEnd > start) {
+		while (ind >= 0) {
+			var timeEnd = previousDay.entries[ind].timeEnd;
+			if (timeEnd == null) timeEnd = DateTime.local();
+			if (timeEnd < start) break;
 			entries.insert(0, previousDay.entries[ind]);
 			ind -= 1;
 		}

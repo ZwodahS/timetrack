@@ -36,6 +36,14 @@ Alternative you can `make gcc` to create the binary instead.
 This requires you to download all the required hashlink files to compile.
 In that case output will be in `bin/timetrack`
 
+## Haxelib run
+
+You can also run this via `haxelib run timetrack`
+
+```
+haxelib git timetrack https://github.com/ZwodahS/timetrack
+```
+
 # Configuration
 
 A config file `.ttconfig` can be created at the home directory.

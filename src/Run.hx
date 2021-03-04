@@ -28,6 +28,20 @@ class Run {
 			if (args[0] == '-i') {
 				interpreter = true;
 				args.shift();
+			} else if (args[0] == '--timestart') {
+				args.shift();
+				var arg = args.shift();
+				try {
+					var ts = Std.parseInt(arg);
+					if (ts < 0 || ts > 23) {
+						Console.log('invalid timestart: ${arg}');
+						return;
+					}
+					Config.dayStart = ts;
+				} catch (e: haxe.Exception) {
+					Console.log('invalid timestart: ${arg}');
+					return;
+				}
 			} else if (args[0] == '-f') {
 				args.shift();
 				dataPath = args.shift();
@@ -74,6 +88,7 @@ class Run {
 		Console.log("  -c create data file if not found");
 		Console.log("  -i interpreter mode");
 		Console.log("  -f path to data.json, default to current directory timesheet.json");
+		Console.log("   --timestart [0 < int < 23] set the dayStart time. This will override the one in .ttconfig");
 		Console.log("  --redact hide descriptions when printing entries");
 		Console.log("Commands: ");
 		pushPrefix("    ");

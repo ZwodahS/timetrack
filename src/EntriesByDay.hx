@@ -10,8 +10,9 @@ class EntriesByDay {
 
 	public function addEntry(e: Entry) {
 		this.entries.push(e);
+		// DO I NEED TO SORT ?
 		this.entries.sort(function(e1, e2) {
-			return Std.int((e2.timeStart - e1.timeStart).getTotalSeconds());
+			return (e1.timeStart - e2.timeStart).sign();
 		});
 	}
 

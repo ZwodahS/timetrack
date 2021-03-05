@@ -108,6 +108,7 @@ class Run {
 		Console.log("<magenta>stats</>".rpad(" ", 40) + "print data stats");
 		Console.log("<magenta>last</> [number]".rpad(" ", 40) + "print the last few entries");
 		Console.log("<magenta>help</>".rpad(" ", 40) + "print this help");
+		Console.log("<magenta>config</>".rpad(" ", 40) + "print the default .ttconfig");
 		if (Run.interpreterMode) {
 			Console.log("<magenta>save</>".rpad(" ", 40) + "save any unsaved changes");
 			Console.log("<magenta>clear</>".rpad(" ", 40) + "clear the screen");
@@ -194,6 +195,10 @@ class Run {
 				last(split.slice(1));
 			case "help":
 				help();
+			case "config":
+				var config = Config.getDefault();
+				var string = haxe.format.JsonPrinter.print(config, "  ");
+				haxe.Log.trace(string, null);
 			default:
 				Console.log('Invalid command: <red>${split[0]}</>');
 				help();

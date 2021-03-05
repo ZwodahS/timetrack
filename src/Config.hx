@@ -9,6 +9,7 @@ typedef ConfigStruct = {
 			?now: String,
 		},
 		?threshold: Array<Int>,
+		?perDayHourThreshold: Int,
 	}
 }
 
@@ -22,6 +23,7 @@ class Config {
 		now: "",
 	}
 	public static var heatmapThreshold: Array<Int> = [0, 0, 0];
+	public static var perDayHourThreshold = 8;
 
 	public static function init() {
 		Config.aliases = new Map<String, String>();
@@ -64,6 +66,9 @@ class Config {
 					Config.heatmapThreshold[i] = config.heatmap.threshold[i];
 				}
 			}
+			if (config.heatmap.perDayHourThreshold != null) {
+				Config.perDayHourThreshold = config.heatmap.perDayHourThreshold;
+			}
 		}
 	}
 
@@ -78,6 +83,7 @@ class Config {
 					now: "<light_yellow>",
 				},
 				threshold: [100, 66, 33],
+				perDayHourThreshold: 6,
 			}
 		}
 		return struct;

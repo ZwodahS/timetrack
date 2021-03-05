@@ -105,8 +105,8 @@ class Run {
 		Console.log("<magenta>day</> [offset]".rpad(" ", 40) + "print day information");
 		Console.log("<magenta>week</> [offset]".rpad(" ", 40) + "print week information");
 		Console.log("<magenta>unfinish</>".rpad(" ", 40) + "Undo a finish");
-		Console.log("<magenta>stats</>".rpad(" ", 40) + "print data stats");
-		Console.log("<magenta>last</> [number]".rpad(" ", 40) + "print the last few entries");
+		Console.log("<magenta>overview</> [maxWeek: Int]".rpad(" ", 40) + "show overview");
+		Console.log("<magenta>last</> [numberOfEntries: Int]".rpad(" ", 40) + "print the last few entries");
 		Console.log("<magenta>help</>".rpad(" ", 40) + "print this help");
 		Console.log("<magenta>config</>".rpad(" ", 40) + "print the default .ttconfig");
 		if (Run.interpreterMode) {
@@ -189,12 +189,17 @@ class Run {
 				printDayState(split.slice(1));
 			case "week":
 				printWeekStats(split.slice(1));
-			case "stats":
-				stats();
 			case "last":
 				last(split.slice(1));
 			case "help":
 				help();
+			case "overview":
+				split.shift();
+				var maxWeek = -1;
+				if (split.length > 0) {
+					maxWeek = Std.parseInt(split[0]);
+				}
+				printOverview(maxWeek);
 			case "config":
 				var config = Config.getDefault();
 				var string = haxe.format.JsonPrinter.print(config, "  ");
@@ -312,11 +317,6 @@ class Run {
 		if (Run.interpreterMode) Sys.command("clear");
 	}
 
-	static function stats() {
-		Console.log('Current number of entries: <green>${Run.db.allEntries.length}</>');
-		Console.log('Number of days tracked: <green>${Run.db.entriesByDayArray.length}</>');
-	}
-
 	static function generateHeatmapHourHeader(distance: Int): String {
 		var start = Config.dayStart;
 		if (distance >= 6) {
@@ -367,7 +367,7 @@ class Run {
 
 		var day = Run.db.getDayEntries(dt);
 
-		var str = 'Data for <blue>${dt.format("%Y %m %d")}</> | ';
+		var str = 'Data for <blue>${formatDate(dt)}</> | ';
 		if (day == null || day.entries.length == 0) {
 			str += '<red>No Entries</>';
 		} else {
@@ -390,6 +390,79 @@ class Run {
 			}
 		}
 		popPrefix();
+	}
+
+	static function printOverview(maxWeek: Int = -1) {
+		if (Run.db.entriesByWeekArray.length == 0) return; // 0 entries
+		var weekStart = Run.db.entriesByWeekArray[0].weekStart;
+		var weekEnd = Database.getWeekStart(DateTime.local());
+		if (maxWeek > 0) {
+			weekStart = weekEnd - Week(maxWeek - 1);
+		}
+
+		var heatmapStrings = [];
+
+		var entries: Array<Entry> = [];
+		while (weekStart <= weekEnd) {
+			var str = '<blue>${formatDate(weekStart)} - ${formatDate(weekStart + Day(6))}</>';
+			var heat = [];
+			var week = Run.db.entriesByWeek[Database.getDayKey(weekStart)];
+			if (week == null) {
+				heat = [0, 0, 0, 0, 0, 0, 0];
+			} else {
+				for (day in week.entriesByDayArray) {
+					var duration = day.totalDuration();
+					heat.push(Std.int(duration / Config.perDayHourThreshold / DateTime.SECONDS_IN_HOUR * 100));
+					for (e in day.entries) entries.push(e);
+				}
+			}
+			str += ' ${formatHeatmap(heat)} [${formatDuration(week.totalDuration())}]';
+			heatmapStrings.push(str);
+			weekStart += Week(1);
+		}
+
+		pushPrefix("    ");
+		Console.log('    Current number of entries: <green>${Run.db.allEntries.length}</>');
+		Console.log('    Number of days tracked: <green>${Run.db.entriesByDayArray.length}</>');
+		Console.log();
+		printTwoColumn(heatmapStrings, []);
+		popPrefix();
+	}
+
+	static function formatDate(dt: DateTime, format: String = "%Y-%m-%d"): String {
+		format = format.replace("%b", formatMonth(dt.getMonth()));
+		return dt.format(format);
+	}
+
+	static function formatMonth(m: Int): String {
+		switch (m) {
+			case 1:
+				return "Jan";
+			case 2:
+				return "Feb";
+			case 3:
+				return "Mar";
+			case 4:
+				return "Apr";
+			case 5:
+				return "May";
+			case 6:
+				return "Jun";
+			case 7:
+				return "Jul";
+			case 8:
+				return "Aug";
+			case 9:
+				return "Sep";
+			case 10:
+				return "Oct";
+			case 11:
+				return "Nov";
+			case 12:
+				return "Dec";
+			default:
+				return '';
+		}
 	}
 
 	static function printCurrentState() {

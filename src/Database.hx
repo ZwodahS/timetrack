@@ -51,7 +51,7 @@ class Database {
 			if (week == null) {
 				week = new EntriesByWeek(this, weekStart);
 				this.entriesByWeek[weekKey] = week;
-				this.entriesByWeekArray[weekKey] = week;
+				this.entriesByWeekArray.push(week);
 			}
 			var dayEntries = this.entriesByWeek[weekKey].getDay(day);
 			this.entriesByDay[dayKey] = dayEntries;

@@ -342,7 +342,7 @@ class Run {
 			} else if (i == 0) {
 				str += '${Config.heatmapColor.zero}■</>';
 			} else if (i == -1) {
-				str += '${Config.heatmapColor.current}■</>';
+				str += '${Config.heatmapColor.now}■</>';
 			}
 		}
 		return str;

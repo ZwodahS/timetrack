@@ -83,12 +83,13 @@ class Database {
 		return Std.int(day.getTime() / 1000);
 	}
 
-	public function checkin(?dt: DateTime): Bool {
+	public function checkin(?dt: DateTime, ?description: String): Bool {
 		var activeEntry = getActiveEntry();
 		if (activeEntry != null) return false;
 		var entry = new Entry();
 		dt = dt == null ? DateTime.local() : dt;
 		entry.timeStart = dt;
+		if (description != null && description != "") entry.description = description;
 		addEntry(entry);
 		return true;
 	}

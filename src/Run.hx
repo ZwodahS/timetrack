@@ -95,7 +95,7 @@ class Run {
 		pushPrefix("    ");
 		Console.log("<magenta>info</>".rpad(" ", 40) + "print current week screen");
 		Console.log("<magenta>cancel</>".rpad(" ", 40) + "undo a [start] command");
-		Console.log("<magenta>start</>".rpad(" ", 40) + "start a new entry");
+		Console.log("<magenta>start</> [description]".rpad(" ", 40) + "start a new entry");
 		Console.log("<magenta>finish</> [description]".rpad(" ", 40)
 			+ "finish the current entry with description");
 		Console.log("<magenta>split</> [description]".rpad(" ", 40)
@@ -173,7 +173,7 @@ class Run {
 			case "cancel":
 				cancel();
 			case "start":
-				checkin();
+				checkin(split.slice(1).join(" "));
 			case "finish":
 				checkout(split.slice(1).join(" "));
 			case "unfinish":
@@ -262,8 +262,8 @@ class Run {
 		}
 	}
 
-	static function checkin() {
-		if (Run.db.checkin()) {
+	static function checkin(description: String) {
+		if (Run.db.checkin(null, description)) {
 			Console.log('<green>Activity Started</>');
 		} else {
 			Console.log('<red>Current Activity not finish</>');

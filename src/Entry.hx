@@ -8,12 +8,28 @@ class Entry {
 	public var index: Int;
 	public var timeStart: Null<DateTime>;
 	public var timeEnd: Null<DateTime>;
-	public var description(get, default): String = "";
+	@:isVar
+	public var description(get, set): String = "";
 	public var db: Database;
 	public var day(get, never): DateTime;
+	public var tags: Array<String>;
 
 	public function get_description(): String {
 		if (Run.redact) return '--REDACTED--';
+		return this.description;
+	}
+
+	public function set_description(s: String): String {
+		this.description = s;
+		var i = s.indexOf('#');
+		while (i != -1) {
+			var end = s.indexOf(' ', i);
+			if (end == -1) end = s.length;
+			var tag = s.substring(i, end);
+			s = s.substring(end);
+			this.tags.push(tag);
+			i = s.indexOf('#');
+		}
 		return this.description;
 	}
 
@@ -22,7 +38,9 @@ class Entry {
 		return Database.getStoredDate(timeStart);
 	}
 
-	public function new() {}
+	public function new() {
+		this.tags = [];
+	}
 
 	public function getInterval(): DateTimeInterval {
 		if (timeStart == null) return null;

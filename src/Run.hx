@@ -4,6 +4,17 @@ import Entry;
 
 using StringTools;
 
+@:structInit class Flags {
+	public var tagFilter: String = null;
+	public var rest: Array<String> = null;
+
+	public function new() {}
+}
+
+@:structInit class FlagsToParse {
+	public var tagFilter: Bool = false;
+}
+
 class Run {
 	public static var db: Database;
 	public static var interpreterMode = false;
@@ -153,6 +164,29 @@ class Run {
 		return true;
 	}
 
+	static function parseFlags(args: Array<String>, flagsToParse: FlagsToParse): Flags {
+		var ind = 0;
+		var flags = new Flags();
+		while (ind < args.length) {
+			if (args[ind] == "--tag" || args[ind] == "-t") {
+				if (flags.tagFilter != null) {
+					Console.log('<red>Double tag filter not implemented</>');
+					return null;
+				}
+				if (args.length < 2) {
+					Console.log('<red>Missing tag value</>');
+					return null;
+				}
+				args.shift();
+				flags.tagFilter = args.shift();
+				continue;
+			}
+			break;
+		}
+		flags.rest = args;
+		return flags;
+	}
+
 	static function processCommand(command: String): Bool {
 		command = command.trim();
 		var split = command.split(" ");
@@ -163,38 +197,38 @@ class Run {
 			command = split.join(" ");
 			split = command.split(" ");
 		}
-		switch (split[0]) {
+		var c = split.shift();
+		switch (c) {
 			case "quit":
 				return quit();
 			case "info":
 				clear();
-				printCurrentState();
+				printCurrentState(split);
 			case "clear":
 				clear();
 			case "cancel":
 				cancel();
 			case "start":
-				checkin(split.slice(1).join(" "));
+				checkin(split.join(" "));
 			case "finish":
-				checkout(split.slice(1).join(" "));
+				checkout(split.join(" "));
 			case "unfinish":
 				uncheckout();
 			case "split":
-				checkoutin(split.slice(1).join(" "));
+				checkoutin(split.join(" "));
 			case "save":
 				save();
 			case "description":
-				updateDescription(split.slice(1).join(" "));
+				updateDescription(split.join(" "));
 			case "day":
-				printDayState(split.slice(1));
+				printDayState(split);
 			case "week":
-				printWeekStats(split.slice(1));
+				printWeekStats(split);
 			case "last":
-				last(split.slice(1));
+				last(split);
 			case "help":
 				help();
 			case "overview":
-				split.shift();
 				var maxWeek = -1;
 				if (split.length > 0) {
 					maxWeek = Std.parseInt(split[0]);
@@ -205,7 +239,7 @@ class Run {
 				var string = haxe.format.JsonPrinter.print(config, "  ");
 				haxe.Log.trace(string, null);
 			default:
-				Console.log('Invalid command: <red>${split[0]}</>');
+				Console.log('Invalid command: <red>${c}</>');
 				help();
 		}
 		return false;
@@ -465,8 +499,9 @@ class Run {
 		}
 	}
 
-	static function printCurrentState() {
-		printWeekStats([]);
+	static function printCurrentState(args: Array<String> = null) {
+		if (args == null) args = [];
+		printWeekStats(args);
 	}
 
 	static function formatDuration(seconds: Int): String {
@@ -508,7 +543,10 @@ class Run {
 		return s;
 	}
 
-	static function printWeekStats(args: Array<String>) {
+	static function printWeekStats(args: Array<String> = null) {
+		if (args == null) args = [];
+		var flags = parseFlags(args, {tagFilter: true});
+		args = flags.rest;
 		var dt = Database.getStoredDate(DateTime.local());
 		if (args.length != 0) {
 			try {
@@ -536,15 +574,15 @@ class Run {
 			Console.log("".lpad(" ", 12) + header);
 			for (ind => day in week.entriesByDayArray) {
 				for (e in day.entries) {
-					entries.push(e);
+					if (flags.tagFilter == null || e.hasTag(flags.tagFilter)) entries.push(e);
 				}
 
 				var prefix = '<blue>${formatDayOfWeek(ind).lpad(" ", 9)}</> - ';
-				var heat = day.getHeatmap(10, -1);
+				var heat = day.getHeatmap(10, -1, flags.tagFilter);
 				for (i => h in heat) {
 					if (h > 0) heatmapTotal[i] += h;
 				}
-				var duration = day == null ? 0 : day.totalDuration();
+				var duration = day == null ? 0 : day.totalDuration(flags.tagFilter);
 				total += duration;
 				var durationString = formatDuration(duration);
 				var str = prefix + formatHeatmap(heat) + " ";

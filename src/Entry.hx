@@ -25,7 +25,7 @@ class Entry {
 		while (i != -1) {
 			var end = s.indexOf(' ', i);
 			if (end == -1) end = s.length;
-			var tag = s.substring(i, end);
+			var tag = s.substring(i + 1, end);
 			s = s.substring(end);
 			this.tags.push(tag);
 			i = s.indexOf('#');
@@ -66,5 +66,9 @@ class Entry {
 
 	public function toString(): String {
 		return '${timeStart} - ${timeEnd} : ${description}';
+	}
+
+	public function hasTag(t: String): Bool {
+		return this.tags.contains(t);
 	}
 }

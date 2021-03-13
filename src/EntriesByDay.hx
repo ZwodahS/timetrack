@@ -20,9 +20,10 @@ class EntriesByDay {
 		this.entries.remove(e);
 	}
 
-	public function totalDuration() {
+	public function totalDuration(tag: String = null) {
 		var duration = 0;
 		for (e in this.entries) {
+			if (tag != null && !e.hasTag(tag)) continue;
 			duration += e.getDuration();
 		}
 		return duration;
@@ -33,8 +34,12 @@ class EntriesByDay {
 		return this.entries[this.entries.length - 1];
 	}
 
-	function getHeatmapEntries(start: DateTime): Array<Entry> {
-		var entries: Array<Entry> = [for (e in this.entries) e];
+	function getHeatmapEntries(start: DateTime, tag: String = null): Array<Entry> {
+		var entries: Array<Entry> = [];
+		for (e in this.entries) {
+			if (tag != null && !e.hasTag(tag)) continue;
+			entries.push(e);
+		}
 		// we cannot use db.getDayEntries as this.day is already floored, and using that will result in double-floored
 		// timestamp, resulting in error
 		var previousDay = this.db.entriesByDay[Database.getDayKey(this.day - Day(1))];
@@ -56,14 +61,15 @@ class EntriesByDay {
 	}
 
 	// return a value between 0 and 100
-	public function getHeatmap(interval = 60, currentTimeNum: Null<Int> = null): Array<Int> {
+	public function getHeatmap(interval = 60, currentTimeNum: Null<Int> = null,
+			tag: String = null): Array<Int> {
 		var dayStart = Config.dayStart;
 		var heat = [];
 		var curr = day + Hour(dayStart);
 		var end = curr + Day(1);
 		var currentInd = 0;
 		var now = DateTime.local();
-		var heatmapEntries = getHeatmapEntries(curr);
+		var heatmapEntries = getHeatmapEntries(curr, tag);
 
 		while (curr != end) {
 			var intervalStart = curr;

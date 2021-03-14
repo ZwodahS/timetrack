@@ -32,6 +32,7 @@ class Run {
 		var dataPath = "timesheet.json";
 		var createFile = false;
 		var commands = [];
+		var tag = null;
 		while (args.length > 0) {
 			if (args[0].startsWith('-') && commands.length > 0) {
 				help();
@@ -63,6 +64,9 @@ class Run {
 			} else if (args[0] == '--redact') {
 				args.shift();
 				Run.redact = true;
+			} else if (args[0] == '--tag' || args[0] == '-t') {
+				args.shift();
+				tag = args.shift();
 			} else if (args[0].startsWith('-')) {
 				Console.log('invalid option ${args[0]}');
 				return;
@@ -88,6 +92,10 @@ class Run {
 		}
 
 		if (commands.length == 0) commands.push("info");
+		if (tag != null) {
+			commands.push("--tag");
+			commands.push(tag);
+		}
 		Run.interpreterMode = false;
 		var command = commands.join(" ");
 		processCommand(command);

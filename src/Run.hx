@@ -458,7 +458,8 @@ class Run {
 					for (e in day.entries) entries.push(e);
 				}
 			}
-			str += ' ${formatHeatmap(heat)} [${formatDuration(week.totalDuration())}]';
+			var totalDuration = week != null ? week.totalDuration() : 0;
+			str += ' ${formatHeatmap(heat)} [${formatDuration(totalDuration)}]';
 			heatmapStrings.push(str);
 			weekStart += Week(1);
 		}

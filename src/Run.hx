@@ -220,6 +220,14 @@ class Run {
 				checkin(split.join(" "));
 			case "finish":
 				checkout(split.join(" "));
+			case "repeat":
+				if (db.allEntries.length > 2) {
+					var previous = db.allEntries[db.allEntries.length - 2];
+					var description = previous != null ? previous.description : "";
+					checkout(description);
+				} else {
+					checkout("");
+				}
 			case "unfinish":
 				uncheckout();
 			case "split":

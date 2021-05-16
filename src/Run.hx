@@ -212,6 +212,8 @@ class Run {
 			case "info":
 				clear();
 				printCurrentState(split);
+			case "current":
+				printCurrent();
 			case "clear":
 				clear();
 			case "cancel":
@@ -442,6 +444,18 @@ class Run {
 		popPrefix();
 	}
 
+	static function printCurrent() {
+		var lastEntry = Run.db.getLastEntry();
+		if (lastEntry == null || lastEntry.timeEnd != null) {
+			haxe.Log.trace('', null);
+		} else {
+			var timeFormatted = '${lastEntry.timeStart.format("%T")} - ';
+			var duration = '[${formatDuration(lastEntry.getDuration(), false)}] ';
+			var output = timeFormatted + duration + lastEntry.description;
+			haxe.Log.trace(output, null);
+		}
+	}
+
 	static function printOverview(maxWeek: Int = -1) {
 		if (Run.db.entriesByWeekArray.length == 0) return; // 0 entries
 		var weekStart = Run.db.entriesByWeekArray[0].weekStart;
@@ -521,12 +535,12 @@ class Run {
 		printWeekStats(args);
 	}
 
-	static function formatDuration(seconds: Int): String {
+	static function formatDuration(seconds: Int, color = true): String {
 		var hours: Int = Std.int(seconds / DateTime.SECONDS_IN_HOUR);
 		seconds -= DateTime.SECONDS_IN_HOUR * hours;
 		var minutes: Int = Std.int(seconds / DateTime.SECONDS_IN_MINUTE);
 		seconds -= DateTime.SECONDS_IN_MINUTE * minutes;
-		return '${formatInt(hours)}h ${formatInt(minutes)}m ${formatInt(seconds)}s';
+		return '${formatInt(hours, color)}h ${formatInt(minutes, color)}m ${formatInt(seconds, color)}s';
 	}
 
 	static function formatInt(i: Int, padzero = 2, color = true): String {

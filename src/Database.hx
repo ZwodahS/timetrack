@@ -185,4 +185,11 @@ class Database {
 		Run.db.checkin(dt);
 		return true;
 	}
+
+	public function checkinout(?description: String): Bool {
+		var dt = DateTime.local();
+		if (!checkin(dt)) return false;
+		if (!checkout(description, dt)) return false;
+		return true;
+	}
 }

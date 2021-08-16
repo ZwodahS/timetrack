@@ -242,6 +242,8 @@ class Run {
 				printDayState(split);
 			case "week":
 				printWeekStats(split);
+			case "mark":
+				checkinout(split.join(" "));
 			case "last":
 				last(split);
 			case "help":
@@ -329,6 +331,14 @@ class Run {
 			Console.log('<green>Activity Started</>');
 		} else {
 			Console.log('<red>Current Activity not finish</>');
+		}
+	}
+
+	static function checkinout(description: String) {
+		if (Run.db.checkinout(description)) {
+			Console.log('<green>Entry added</>');
+		} else {
+			Console.log('<red>Error</>');
 		}
 	}
 

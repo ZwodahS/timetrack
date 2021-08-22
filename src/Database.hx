@@ -75,8 +75,8 @@ class Database {
 
 	static public function getWeekStart(?dt: DateTime): DateTime {
 		if (dt == null) dt = getStoredDate(DateTime.local());
-		var monday = dt.snap(Week(Down, Monday));
-		return monday;
+		var weekStart = dt.snap(Week(Down, Config.getWeekStart()));
+		return weekStart;
 	}
 
 	public inline static function getDayKey(day: DateTime): Int {

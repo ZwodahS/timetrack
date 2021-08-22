@@ -1,7 +1,7 @@
 typedef ConfigStruct = {
 	?dayStart: Int,
+	?weekStart: Int,
 	?aliases: Dynamic,
-
 	?heatmap: {
 		?color: {
 			?threshold: Array<String>,
@@ -15,6 +15,7 @@ typedef ConfigStruct = {
 
 class Config {
 	public static var dayStart = 6;
+	public static var weekStart = 1; // 1 for monday, 7 for sunday
 	public static var aliases: Map<String, String>;
 
 	public static var heatmapColor = {
@@ -43,6 +44,7 @@ class Config {
 
 	public static function loadStruct(config: ConfigStruct) {
 		if (config.dayStart != null) Config.dayStart = config.dayStart;
+		if (config.weekStart != null) Config.weekStart = config.weekStart;
 		if (config.aliases != null) {
 			for (key in Reflect.fields(config.aliases)) {
 				var command: String = Reflect.field(config.aliases, key);
@@ -72,10 +74,32 @@ class Config {
 		}
 	}
 
+	public static function getWeekStart(): DTWeekDay {
+		switch (Config.weekStart) {
+			case 1:
+				return Monday;
+			case 2:
+				return Tuesday;
+			case 3:
+				return Wednesday;
+			case 4:
+				return Thursday;
+			case 5:
+				return Friday;
+			case 6:
+				return Saturday;
+			case 7:
+				return Sunday;
+			default:
+				return Monday;
+		}
+	}
+
 	public static function getDefault(): ConfigStruct {
 		var struct: ConfigStruct = {
 			aliases: {},
 			dayStart: 6,
+			weekStart: 1,
 			heatmap: {
 				color: {
 					threshold: ["<bold,green>", "<green>", "<dim,light_green>", "<dim,green>"],

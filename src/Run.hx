@@ -617,8 +617,7 @@ class Run {
 				for (e in day.entries) {
 					if (flags.tagFilter == null || e.hasTag(flags.tagFilter)) entries.push(e);
 				}
-
-				var prefix = '<blue>${formatDayOfWeek(ind).lpad(" ", 9)}</> - ';
+				var prefix = '<blue>${formatDayOfWeek(day.day.getWeekDay(true) - 1).lpad(" ", 9)}</> - ';
 				var heat = day.getHeatmap(10, -1, flags.tagFilter);
 				for (i => h in heat) {
 					if (h > 0) heatmapTotal[i] += h;
